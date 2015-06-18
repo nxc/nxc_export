@@ -1,0 +1,19 @@
+div.nxc-export-container {
+padding: 10px;
+}
+
+div.nxc-export-block-title,
+div.nxc-export-block-content {
+float: left;
+padding: 5px;
+}
+
+div.nxc-export-block-title {
+width: 200px;
+text-align: right;
+}
+
+ul#nxc-export-available-attributes {
+list-style: none;
+margin: 2px 0px 0px 0px;
+}
