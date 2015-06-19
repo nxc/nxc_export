@@ -5,16 +5,17 @@
  * @date    06 Apr 2010
  **/
 
-$response = new nxcMootoolsAJAXResponse();
-$response->setStatus( nxcMootoolsAJAXResponse::STATUS_SUCCESS );
+$response = array();
+$response['status'] = 200;
+$response['errors'] = array();
 
 $class = eZContentClass::fetch( $Params['classID'] );
 if( !( $class instanceof eZContentClass ) ) {
-	$response->setStatus( nxcMootoolsAJAXResponse::STATUS_ERROR );
-	$response->addError( ezi18n( 'extension/nxc_export', 'Can not fetch the class' ), 'class_attributes' );
+	$response['status'] = 500;
+	$response['errors'][] = ezpI18n::tr( 'extension/nxc_export', 'Can not fetch the class' );
 }
 
-if( $response->getStatus() === nxcMootoolsAJAXResponse::STATUS_SUCCESS ) {
+if( $response['status'] == 200 ) {
 	$ini                = eZINI::instance( 'nxcexport.ini' );
 	$availableDatatypes = array_unique( $ini->variable( 'General', 'AvailableDatatypes' ) );
 
@@ -27,19 +28,19 @@ if( $response->getStatus() === nxcMootoolsAJAXResponse::STATUS_SUCCESS ) {
 	}
 
 	if( count( $availableAttributes ) === 0 ) {
-		$response->setStatus( nxcMootoolsAJAXResponse::STATUS_ERROR );
-		$response->addError(
-			ezi18n( 'extension/nxc_export', 'There are no available attributes for export in selected class' ),
-			'class_attributes'
-		);
+		$response['status'] = 500;
+		$response['errors'][] =	ezpI18n::tr( 'extension/nxc_export', 'There are no available attributes for export in selected class' );
 	} else {
 		include_once( 'kernel/common/template.php' );
 		$tpl = templateInit();
 		$tpl->setVariable( 'attributes', $availableAttributes );
-
-		$response->availableAttributes = $tpl->fetch( 'design:nxcexport/available_attributes.tpl' );
+		
+		$response['data'] = array();
+		$response['data']['availableAttributes'] = $tpl->fetch( 'design:nxcexport/available_attributes.tpl' );
 	}
 }
 
-$response->output();
+echo json_encode($response);
+eZExecution::cleanExit();
+
 ?>

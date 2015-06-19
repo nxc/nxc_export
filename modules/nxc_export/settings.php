@@ -22,15 +22,14 @@ $tpl->setVariable( 'available_classes', $classes );
 
 $Result = array();
 $Result['content']         = $tpl->fetch( 'design:nxcexport/settings.tpl' );
-$Result['navigation_part'] = 'nxceventmanagernavigationpart';
-$Result['left_menu']       = 'design:parts/datalist/menu.tpl';
+$Result['navigation_part'] = 'ezsetupnavigationpart';
 $Result['path']            = array(
 	array(
-		'text' => ezi18n( 'extension/nxc_export', 'Event managment' ),
-		'url'  => 'eventmanager/dashboard'
+		'text' => ezpI18n::tr( 'settings', 'Setup' ),
+		'url'  => 'setup/cache'
 	),
 	array(
-		'text' => ezi18n( 'extension/nxc_export', 'Reports' ),
+		'text' => ezpI18n::tr( 'extension/nxc_export', 'NXC Export' ),
 		'url'  => false
 	)
 );
